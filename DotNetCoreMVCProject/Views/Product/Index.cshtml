@@ -6,9 +6,11 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<button type="button" class="btn btn-info addProductbtn" data-toggle="modal" data-target="#addProduct">
+    Add product
+</button>
+
 <table class="table">
     <thead>
         <tr>
@@ -37,11 +39,37 @@
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+@*                 <button type="button" class="btn btn-success editProductBtn" data-toggle="modal" data-target="#editProduct" data-url="@Url.Action($"EditItem", new { id = item.id })">
+                    Edit
+                </button> |
+                <button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct">
+                    Details
+                </button> |
+                <button type="button" class="btn btn-danger delteProduct" data-toggle="modal" data-target="#delteProduct"  data-url="@Url.Action($"RemoveItem", new { id = item.id })">
+                    Delete
+                </button> *@
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+
+@await Html.PartialAsync("_ProductsPv", new Product())
+
+<div id="editSection">
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(".addProductbtn").click(function (e) {
+           $("#addProduct").modal("show");
+        });
+
+        $(".closebtn").click(function (e) {
+           $("#addProduct").modal("hide");
+        });
+
+    </script>
+}
