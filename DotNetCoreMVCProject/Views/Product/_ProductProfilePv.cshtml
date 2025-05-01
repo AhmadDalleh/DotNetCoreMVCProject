@@ -1,0 +1,42 @@
+﻿@model DotNetCoreMVCProject.Models.Product
+
+<div class="modal fade" id="ProductProfile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Product</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="GetOneItem" method="post">
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            Name
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            Price
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+                        <dt class="col-sm-2">
+                            Created Date
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CreatedDate)
+                        </dd>
+                    </dl>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary ProfileClosebtn" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success editProductBtn" data-toggle="modal" data-target="#editProduct" data-url="@Url.Action($"EditItem", new { id = Model.Id })">
+                            Edit
+                        </button> |
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

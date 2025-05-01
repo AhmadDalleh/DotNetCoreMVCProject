@@ -27,7 +27,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -39,15 +40,17 @@
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
             <td>
-@*                 <button type="button" class="btn btn-success editProductBtn" data-toggle="modal" data-target="#editProduct" data-url="@Url.Action($"EditItem", new { id = item.id })">
-                    Edit
-                </button> |
-                <button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct">
+
+            <button type="button" class="btn btn-success editProductBtn" data-toggle="modal" data-target="#editProduct" data-url="@Url.Action($"EditItem", new { id = item.Id })">
+                        Edit
+            </button> |
+
+            <button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct" data-url="@Url.Action($"GetOneItem", new {id = item.Id})" >
                     Details
-                </button> |
-                <button type="button" class="btn btn-danger delteProduct" data-toggle="modal" data-target="#delteProduct"  data-url="@Url.Action($"RemoveItem", new { id = item.id })">
+            </button> |
+            <button type="button" class="btn btn-danger removeProductbtn" data-toggle="modal" data-target="#deleteProduct" data-url="@Url.Action($"RemoveItem", new { id = item.Id })">
                     Delete
-                </button> *@
+            </button> 
             </td>
         </tr>
 }
@@ -70,6 +73,83 @@
         $(".closebtn").click(function (e) {
            $("#addProduct").modal("hide");
         });
+
+        //edit pv
+         $(".editProductBtn").click(function (e) {
+            e.preventDefault();
+
+            const url = $(this).data("url");
+
+            $.get(url,function(data){
+                $("#editSection").html(data);
+                $("#editProduct").modal("show");
+
+
+                $(".editClosebtn").click(function (e) {
+               
+                   $("#editProduct").modal("hide");
+
+                });
+            })
+        });
+
+
+        $(".removeProductbtn").click(function (e) {
+            e.preventDefault();
+
+            const url = $(this).data("url");
+
+            $.get(url,function(data){
+                $("#editSection").html(data);
+                $("#RemoveProduct").modal("show");
+
+
+                $(".removeClosebtn").click(function (e) {
+
+                   $("#RemoveProduct").modal("hide");
+
+                });
+            })
+        });
+
+
+        $(".detailsProduct").click(function (e) {
+            e.preventDefault();
+
+            const url = $(this).data("url");
+
+            $.get(url,function(data){
+                $("#editSection").html(data);
+                $("#ProductProfile").modal("show");
+
+
+                $(".ProfileClosebtn").click(function (e) {
+
+                   $("#ProductProfile").modal("hide");
+
+                });
+                $(".editProductBtn").click(function (e) {
+                $("#ProductProfile").modal("hide");
+                e.preventDefault();
+
+                const url = $(this).data("url");
+
+                 $.get(url,function(data){
+                    $("#editSection").html(data);
+                   
+                    $("#editProduct").modal("show");
+
+
+                $(".editClosebtn").click(function (e) {
+
+                   $("#editProduct").modal("hide");
+                    
+                });
+            })
+        });
+            })
+        });
+
 
     </script>
 }

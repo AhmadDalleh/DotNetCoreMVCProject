@@ -17,7 +17,7 @@ namespace DotNetCoreMVCProject.Models
         public decimal? Price { get; set; }
 
         [DisplayName("Create date")]
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
 }

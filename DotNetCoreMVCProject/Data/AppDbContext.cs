@@ -18,5 +18,9 @@ namespace DotNetCoreMVCProject.Data
             base.OnModelCreating(modelBuilder); 
         }
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<TheClass> Classes { get; set; }
+
+        public DbSet<TheClassStudent> Students { get; set; }
     }
 }
