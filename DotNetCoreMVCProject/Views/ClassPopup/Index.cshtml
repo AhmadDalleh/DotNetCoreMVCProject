@@ -7,7 +7,9 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="AddClass">Create New</a>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addClassModal" onclick="addClass()">
+        Add Class
+    </button>
 </p>
 <table class="table">
     <thead>
@@ -22,7 +24,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ClassName)
@@ -39,3 +42,20 @@
 }
     </tbody>
 </table>
+
+<div id="classSection">
+
+</div>
+
+<script>
+    function addClass(){
+        $.ajax({
+            type:"Get",
+            url: "/ClassPopup/AddClass",
+            success: function(result){
+                $("#classSection").html(result);
+                $("#addClassModal").modal('show');
+            }
+        })
+    }
+</script>
