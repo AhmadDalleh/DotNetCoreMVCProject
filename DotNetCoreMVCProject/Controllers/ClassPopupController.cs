@@ -45,13 +45,16 @@ namespace DotNetCoreMVCProject.Controllers
             var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
             return PartialView("_DetailsClassPV",theClass);
         }
-
+        
+        //Get
         public IActionResult Edit(int id)
         {
             var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
+            theClass.Students.Add(new TheClassStudent());
             return PartialView("_EditClassPV", theClass);
         }
 
+        //Post
         [HttpPost]
         public IActionResult Edit(TheClass theClass)
         {
@@ -59,13 +62,17 @@ namespace DotNetCoreMVCProject.Controllers
             _context.Students.RemoveRange(students);
             _context.SaveChanges();
 
+            if (theClass.Students != null)
+                theClass.Students = theClass.Students.Where(s => s.Name != null).ToList();
             _context.Classes.Update(theClass);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
+
         public IActionResult Delete(int id)
         {
+
             var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
             return PartialView("_DeleteClassPV",theClass);
         }

@@ -38,10 +38,10 @@
                         Edit
                     </button> |
 
-                    <button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct" data-url="@Url.Action($"Details", new { id = item.Id })">
+                    <button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct" onclick="detailsClass(@item.Id)">
                         Details
                     </button> |
-                    <button type="button" class="btn btn-danger removeProductbtn" data-toggle="modal" data-target="#deleteProduct" data-url="@Url.Action($"Remove", new { id = item.Id })">
+                    <button type="button" class="btn btn-danger removeProductbtn" data-toggle="modal" data-target="#deleteProduct" onclick="deleteClass(@item.Id)">
                         Delete
                     </button>
             </td>
@@ -79,4 +79,32 @@
             }
         })
     }
+
+    function deleteClass(Id)
+    {
+        console.log("the id is :",Id)
+        $.ajax({
+            type:"Get",
+            url: "/ClassPopup/Delete/" + Id,
+            success: function(result){
+                $("#classSection").html(result);
+                $("#deleteClassModal").modal('show');
+            }
+        })
+    }
+
+    function detailsClass(Id)
+    {
+        console.log("the id is :",Id)
+        $.ajax({
+            type:"Get",
+            url: "/ClassPopup/Details/" + Id,
+            success: function(result){
+                $("#classSection").html(result);
+                $("#detailsClassModal").modal('show');
+            }
+        })
+    }
+
+
 </script>
