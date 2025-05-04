@@ -17,8 +17,8 @@ namespace DotNetCoreMVCProject.Models
         public string? Phone {  get; set; }
 
         [ForeignKey("theClass")]
-        public int TheClassId { get; set; }
+        public int? TheClassId { get; set; }
 
-        public TheClass TheClass { get; set; }
+        public TheClass? TheClass { get; set; }
     }
 }

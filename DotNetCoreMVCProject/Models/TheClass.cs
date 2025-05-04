@@ -16,7 +16,7 @@ namespace DotNetCoreMVCProject.Models
         [DisplayName("Teacher Name")]
         public string? Teacher { get; set; }
 
-        public virtual List<TheClassStudent> Students { get; set; } = new List<TheClassStudent>();
+        public virtual List<TheClassStudent>? Students { get; set; } = new List<TheClassStudent>();
 
     }
 }
