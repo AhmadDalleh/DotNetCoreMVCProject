@@ -16,11 +16,21 @@ namespace DotNetCoreMVCProject.Controllers
         private readonly AppDbContext _context;
         private readonly IConfiguration _conf;
 
+        //Get
         public IActionResult Index()
         {
             List<TheClass> classes = _context.Classes.ToList();
             return View(classes);
         }
+
+        //Get
+        public IActionResult Details(int id)
+        {
+            var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
+            return PartialView("_DetailsClassPV", theClass);
+        }
+
+        //Get
         public IActionResult AddClass()
         {
 
@@ -30,6 +40,7 @@ namespace DotNetCoreMVCProject.Controllers
             return PartialView("_AddClassPV", theClass);
         }
 
+        //Post
         [HttpPost]
         public IActionResult AddClass([FromBody] TheClass theClass)
         {
@@ -40,11 +51,6 @@ namespace DotNetCoreMVCProject.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Details(int id)
-        {
-            var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
-            return PartialView("_DetailsClassPV", theClass);
-        }
 
         //Get
         public IActionResult Edit(int id)
@@ -69,7 +75,7 @@ namespace DotNetCoreMVCProject.Controllers
             return RedirectToAction("Index");
         }
 
-
+        //Get
         public IActionResult Delete(int id)
         {
 
@@ -77,6 +83,7 @@ namespace DotNetCoreMVCProject.Controllers
             return PartialView("_DeleteClassPV", theClass);
         }
 
+        //Post
         [HttpPost]
         public IActionResult Delete(TheClass theClass)
         {

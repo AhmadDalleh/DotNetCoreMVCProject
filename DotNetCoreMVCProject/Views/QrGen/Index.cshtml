@@ -1,0 +1,131 @@
+﻿@model MdlQrCoder
+
+<form asp-action="Index" >
+
+
+    <div class="row mt-2">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <label>Select QR Code Type</label>
+            <select asp-for="QrCodeType" id="QrCodeType" class="form-control" onchange="onQRCodeTypeChange()">
+                <option value="1">Url</option>
+                <option value="2">SMS</option>
+                <option value="3">WhatsApp</option>
+                <option value="4">Email</option>
+                <option value="5">WIFI</option>
+            </select>
+        </div>
+    </div>
+
+    <!--  Url  -->
+    <div id="Type1" class="hideMe">
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter your url</label>
+                <input type="text" asp-for="ImageUrl" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+
+    <!--  SMS  -->
+    <div id="Type2" class="hideMe">
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Phone Number with country code(eg. +91)</label>
+                <input type="text" asp-for="SMSPhoneNumber" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter your Message</label>
+                <textarea asp-for="SMSBody" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!--  WhatsApp  -->
+    <div id="Type3" class="hideMe">
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter WhatsApp Number with country code(eg. +91)</label>
+                <input type="text" asp-for="WhatsAppNumber" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter your Message</label>
+                <textarea asp-for="WhatsAppMessage" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <!--  Email  -->
+    <div id="Type4" class="hideMe">
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Receive's Email Address</label>
+                <input type="text" asp-for="Email" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Email Subject</label>
+                <input type="text" asp-for="EmailSubject" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Email Message</label>
+                <textarea asp-for="EmailBody" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <!--  Url  -->
+    <div id="Type5" class="hideMe">
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter WIFI Name</label>
+                <input type="text" asp-for="Wi_fiName" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter WIFI Password</label>
+                <input type="text" asp-for="Wi_fiPassword" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <button type="submit" class="btn btn-primary">Generate</button>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.QrImageUrl))
+    {
+        <div class="row mt-2" id="qrCodeImage">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <img height="250" width="250" src="@Model.QrImageUrl" />
+            </div>
+        </div>
+    }
+</form>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $(".hideMe").hide();
+            $("#QrCodeType").trigger("change");
+        });
+
+        function onQRCodeTypeChange() {
+            let qrcodeType = $("#QrCodeType").val();
+            $(".hideMe").hide();
+            $("#Type" + qrcodeType).show();
+        }
+    </script>
+}
