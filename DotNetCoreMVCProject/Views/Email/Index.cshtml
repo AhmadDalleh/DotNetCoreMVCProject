@@ -1,0 +1,62 @@
+﻿@model MdlEmail
+
+<form asp-action="Index">
+    <!--  Email  -->
+    <div id="Type4" class="hideMe">
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>smtp Server</label>
+                <input type="text" asp-for="smtpServer" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>smtp Port</label>
+                <input type="text" asp-for="smtpPort" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>sender Email</label>
+                <input type="text" asp-for="senderEmail" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>sender Password</label>
+                <input type="text" asp-for="senderPassword" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Receive's Email Address</label>
+                <input type="text" asp-for="recipientEmail" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Email Subject</label>
+                <input type="text" asp-for="subject" class="form-control" autocomplete="off" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Enter Email Message</label>
+                <textarea asp-for="body" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-2">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <button type="submit" class="btn btn-primary">Send mail</button>
+        </div>
+    </div>
+</form>
