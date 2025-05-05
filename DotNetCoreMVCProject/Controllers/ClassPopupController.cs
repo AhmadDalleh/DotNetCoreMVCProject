@@ -23,15 +23,15 @@ namespace DotNetCoreMVCProject.Controllers
         }
         public IActionResult AddClass()
         {
-            
+
             TheClass theClass = new TheClass();
             theClass.Students.Add(new TheClassStudent());
 
-            return PartialView("_AddClassPV",theClass);
+            return PartialView("_AddClassPV", theClass);
         }
 
         [HttpPost]
-        public IActionResult AddClass(TheClass theClass)
+        public IActionResult AddClass([FromBody] TheClass theClass)
         {
             if (theClass.Students != null)
                 theClass.Students = theClass.Students.Where(s => s.Name != null).ToList();
@@ -43,9 +43,9 @@ namespace DotNetCoreMVCProject.Controllers
         public IActionResult Details(int id)
         {
             var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
-            return PartialView("_DetailsClassPV",theClass);
+            return PartialView("_DetailsClassPV", theClass);
         }
-        
+
         //Get
         public IActionResult Edit(int id)
         {
@@ -74,7 +74,7 @@ namespace DotNetCoreMVCProject.Controllers
         {
 
             var theClass = _context.Classes.Where(x => x.Id == id).Include(s => s.Students).FirstOrDefault();
-            return PartialView("_DeleteClassPV",theClass);
+            return PartialView("_DeleteClassPV", theClass);
         }
 
         [HttpPost]
@@ -87,3 +87,5 @@ namespace DotNetCoreMVCProject.Controllers
         }
     }
 }
+
+

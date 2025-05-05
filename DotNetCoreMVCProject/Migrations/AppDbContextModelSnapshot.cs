@@ -43,7 +43,7 @@ namespace DotNetCoreMVCProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("DotNetCoreMVCProject.Models.TheClass", b =>
@@ -65,7 +65,7 @@ namespace DotNetCoreMVCProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classes");
+                    b.ToTable("Classes", (string)null);
                 });
 
             modelBuilder.Entity("DotNetCoreMVCProject.Models.TheClassStudent", b =>
@@ -94,7 +94,7 @@ namespace DotNetCoreMVCProject.Migrations
 
                     b.HasIndex("TheClassId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("DotNetCoreMVCProject.Models.TheClassStudent", b =>
