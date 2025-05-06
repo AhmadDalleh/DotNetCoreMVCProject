@@ -30,13 +30,13 @@ namespace DotNetCoreMVCProject.Controllers
                     payload = new SMS(mdl.SMSPhoneNumber!, mdl.SMSBody!);
                     break;
                 case 3://Whatsapp
-                    payload = new WhatsAppMessage(mdl.WhatsAppNumber!,mdl.WhatsAppMessage!);
+                    payload = new WhatsAppMessage(mdl.WhatsAppNumber!, mdl.WhatsAppMessage!);
                     break;
                 case 4://mail
-                    payload = new Mail(mdl.Email!,mdl.EmailSubject!,mdl.EmailBody!);
+                    payload = new Mail(mdl.Email!, mdl.EmailSubject!, mdl.EmailBody!);
                     break;
-                case 5://wifi
-                    payload = new WiFi(mdl.Wi_fiName!, mdl.Wi_fiPassword!,WiFi.Authentication.WPA);
+                case 5://WIFI
+                    payload = new WiFi(mdl.Wi_fiName!, mdl.Wi_fiPassword!, WiFi.Authentication.WPA);
                     break;
 
             }
@@ -53,3 +53,4 @@ namespace DotNetCoreMVCProject.Controllers
         }
     }
 }
+
