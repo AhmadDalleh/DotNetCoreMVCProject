@@ -62,7 +62,7 @@ namespace DotNetCoreMVCProject.Controllers
 
         //Post
         [HttpPost]
-        public IActionResult Edit(TheClass theClass)
+        public IActionResult Edit([FromBody]TheClass theClass)
         {
             List<TheClassStudent> students = _context.Students.Where(x => x.TheClassId == theClass.Id).ToList();
             _context.Students.RemoveRange(students);

@@ -1,6 +1,7 @@
 ﻿using DotNetCoreMVCProject.Data;
 using DotNetCoreMVCProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DotNetCoreMVCProject.Controllers
@@ -13,10 +14,38 @@ namespace DotNetCoreMVCProject.Controllers
         }
 
         private AppDbContext _context;
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var products = _context.Products.ToList();
-            return View(products);
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+            var products = from p in _context.Products select p;
+
+            switch (sortOrder)
+            {
+                case "name-desc":
+                    products = products.OrderByDescending(n => n.Name);
+                    break;
+
+                case "Date":
+                    products = products.OrderBy(n => n.CreatedDate);
+                    break;
+                case "date_desc":
+                    products = products.OrderByDescending(n => n.CreatedDate);
+                    break;
+                case "Price":
+                    products = products.OrderBy(n => n.Price);
+                    break;
+                case "price_desc":
+                    products = products.OrderByDescending(n => n.Price);
+                    break;
+                default:
+                    products = products.OrderBy(n => n.Name);
+                    break;
+            }
+
+            var productsList = await products.ToListAsync();
+            return View(productsList);
         }
 
 
