@@ -1,4 +1,5 @@
-﻿using DotNetCoreMVCProject.Data;
+﻿using DotNetCoreMVCProject.Classes;
+using DotNetCoreMVCProject.Data;
 using DotNetCoreMVCProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,19 +15,43 @@ namespace DotNetCoreMVCProject.Controllers
         }
 
         private AppDbContext _context;
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter,string searchString,int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
-            var products = from p in _context.Products select p;
+
+            if(searchString!= null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter; 
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            var products = from p in _context.Products 
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where
+                    (s => 
+                    s.Name.Contains(searchString) || 
+                    s.Price.ToString().Contains(searchString) ||
+                    s.CreatedDate.ToString().Contains(searchString)
+                    );
+            }
+
 
             switch (sortOrder)
             {
                 case "name-desc":
                     products = products.OrderByDescending(n => n.Name);
                     break;
-
                 case "Date":
                     products = products.OrderBy(n => n.CreatedDate);
                     break;
@@ -43,8 +68,8 @@ namespace DotNetCoreMVCProject.Controllers
                     products = products.OrderBy(n => n.Name);
                     break;
             }
-
-            var productsList = await products.ToListAsync();
+            int pageSize = 5;
+            var productsList = await PaginatedList<Product>.CreateAsync(products.AsNoTracking(), pageNumber ?? 1, pageSize);
             return View(productsList);
         }
 

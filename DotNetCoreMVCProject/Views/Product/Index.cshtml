@@ -1,155 +1,174 @@
-﻿@model IEnumerable<DotNetCoreMVCProject.Models.Product>
+﻿@using DotNetCoreMVCProject.Classes
+@model PaginatedList<DotNetCoreMVCProject.Models.Product>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
 
 
 <button type="button" class="btn btn-info addProductbtn" data-toggle="modal" data-target="#addProduct">
-    Add product
+	Add product
 </button>
 
+<form asp-action="Index" method="get">
+	<div class="form-actions no-color">
+		<p>
+			<label>Find Your Product: <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" /></label>
+		</p>
+	</div>
+</form>
+
+
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"> @Html.DisplayNameFor(m => m.Name)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]"> @Html.DisplayNameFor(model => model.Price)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]"> @Html.DisplayNameFor(model => model.CreatedDate)</a>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model)
-{
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
+	<thead>
+		<tr>
+			<th>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]"> Name </a>
+			</th>
+			<th>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]"> Price </a>
+			</th>
+			<th>
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]"> Created Date </a>
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CreatedDate)
+				</td>
+				<td>
 
-            <button type="button" class="btn btn-success editProductBtn" data-toggle="modal" data-target="#editProduct" data-url="@Url.Action($"EditItem", new { id = item.Id })">
-                        Edit
-            </button> |
+					<button type="button" class="btn btn-success editProductBtn" data-toggle="modal" data-target="#editProduct" data-url="@Url.Action($"EditItem", new { id = item.Id })">
+						Edit
+					</button> |
 
-            <button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct" data-url="@Url.Action($"GetOneItem", new {id = item.Id})" >
-                    Details
-            </button> |
-            <button type="button" class="btn btn-danger removeProductbtn" data-toggle="modal" data-target="#deleteProduct" data-url="@Url.Action($"RemoveItem", new { id = item.Id })">
-                    Delete
-            </button> 
-            </td>
-        </tr>
-}
-    </tbody>
+					<button type="button" class="btn btn-light detailsProduct" data-toggle="modal" data-target="#detailsProduct" data-url="@Url.Action($"GetOneItem", new { id = item.Id })">
+						Details
+					</button> |
+					<button type="button" class="btn btn-danger removeProductbtn" data-toggle="modal" data-target="#deleteProduct" data-url="@Url.Action($"RemoveItem", new { id = item.Id })">
+						Delete
+					</button>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
+@{
+	var privDisabled = !Model.HasPreviousPages ? "disabled" : "";
+	var nextDisabled = !Model.HasNextPages ? "disabled" : "";
+}
+
+<a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @privDisabled">Previous</a>
+
+<a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]" asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]" class="btn btn-default @nextDisabled">Next</a>
 
 @await Html.PartialAsync("_ProductsPv", new Product())
 
 <div id="editSection">
-
 </div>
 
-@section Scripts{
-    <script type="text/javascript">
-        $(".addProductbtn").click(function (e) {
-           $("#addProduct").modal("show");
-        });
+@section Scripts {
+	<script type="text/javascript">
+		$(".addProductbtn").click(function (e) {
+		   $("#addProduct").modal("show");
+		});
 
-        $(".closebtn").click(function (e) {
-           $("#addProduct").modal("hide");
-        });
+		$(".closebtn").click(function (e) {
+		   $("#addProduct").modal("hide");
+		});
 
-        //edit pv
-         $(".editProductBtn").click(function (e) {
-            e.preventDefault();
+		//edit pv
+		 $(".editProductBtn").click(function (e) {
+			e.preventDefault();
 
-            const url = $(this).data("url");
+			const url = $(this).data("url");
 
-            $.get(url,function(data){
-                $("#editSection").html(data);
-                $("#editProduct").modal("show");
-
-
-                $(".editClosebtn").click(function (e) {
-               
-                   $("#editProduct").modal("hide");
-
-                });
-            })
-        });
+			$.get(url,function(data){
+				$("#editSection").html(data);
+				$("#editProduct").modal("show");
 
 
-        $(".removeProductbtn").click(function (e) {
-            e.preventDefault();
+				$(".editClosebtn").click(function (e) {
 
-            const url = $(this).data("url");
+				   $("#editProduct").modal("hide");
 
-            $.get(url,function(data){
-                $("#editSection").html(data);
-                $("#RemoveProduct").modal("show");
-
-
-                $(".removeClosebtn").click(function (e) {
-
-                   $("#RemoveProduct").modal("hide");
-
-                });
-            })
-        });
+				});
+			})
+		});
 
 
-        $(".detailsProduct").click(function (e) {
-            e.preventDefault();
+		$(".removeProductbtn").click(function (e) {
+			e.preventDefault();
 
-            const url = $(this).data("url");
+			const url = $(this).data("url");
 
-            $.get(url,function(data){
-                $("#editSection").html(data);
-                $("#ProductProfile").modal("show");
-
-
-                $(".ProfileClosebtn").click(function (e) {
-
-                   $("#ProductProfile").modal("hide");
-
-                });
-                $(".editProductBtn").click(function (e) {
-                $("#ProductProfile").modal("hide");
-                e.preventDefault();
-
-                const url = $(this).data("url");
-
-                 $.get(url,function(data){
-                    $("#editSection").html(data);
-                   
-                    $("#editProduct").modal("show");
+			$.get(url,function(data){
+				$("#editSection").html(data);
+				$("#RemoveProduct").modal("show");
 
 
-                $(".editClosebtn").click(function (e) {
+				$(".removeClosebtn").click(function (e) {
 
-                   $("#editProduct").modal("hide");
-                    
-                });
-            })
-        });
-            })
-        });
+				   $("#RemoveProduct").modal("hide");
+
+				});
+			})
+		});
 
 
-    </script>
+		$(".detailsProduct").click(function (e) {
+			e.preventDefault();
+
+			const url = $(this).data("url");
+
+			$.get(url,function(data){
+				$("#editSection").html(data);
+				$("#ProductProfile").modal("show");
+
+
+				$(".ProfileClosebtn").click(function (e) {
+
+				   $("#ProductProfile").modal("hide");
+
+				});
+				$(".editProductBtn").click(function (e) {
+				$("#ProductProfile").modal("hide");
+				e.preventDefault();
+
+				const url = $(this).data("url");
+
+				 $.get(url,function(data){
+					$("#editSection").html(data);
+
+					$("#editProduct").modal("show");
+
+
+				$(".editClosebtn").click(function (e) {
+
+				   $("#editProduct").modal("hide");
+
+				});
+			})
+		});
+			})
+		});
+
+
+	</script>
 }
